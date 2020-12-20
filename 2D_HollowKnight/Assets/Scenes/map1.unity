@@ -574,6 +574,8 @@ GameObject:
   - component: {fileID: 449283062}
   - component: {fileID: 449283061}
   - component: {fileID: 449283060}
+  - component: {fileID: 449283063}
+  - component: {fileID: 449283064}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -665,6 +667,39 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &449283063
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 449283059}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.95, y: 1.65, z: 0.2}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &449283064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 449283059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6116325351244414fb5f422a22494517, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 10.5
+  JumpHeight: 100
+  OnGround: 0
+  bullet: {fileID: 0}
+  bullet_pos: {fileID: 0}
+  bullet_speed: 800
+  shoot_sound: {fileID: 0}
+  HP: 100
 --- !u!1 &461957123
 GameObject:
   m_ObjectHideFlags: 0
