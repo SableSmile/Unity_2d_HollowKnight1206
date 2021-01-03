@@ -22,6 +22,8 @@ public class Tip : MonoBehaviour
     public Camera came;
     public Transform tran;
 
+    
+
 
 
  
