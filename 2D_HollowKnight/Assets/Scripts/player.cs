@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class player : MonoBehaviour
 {
+    #region  欄位
     [Header("移動速度"),Range(0f,1000f)]
     public float MoveSpeed;
     
@@ -30,15 +31,30 @@ public class player : MonoBehaviour
     private AudioSource audioSource;
     private Rigidbody2D rb;
     private Animator animator;
+    #endregion
+
+    public float h;
     // Start is called before the first frame update
     void Start()
     {
-        
+        //GetComponent<泛型>()
+        //泛型:泛指所有類型
+        rb=GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        GetHorizontal();
+    }
+
+    private void Move(){
+        //剛體.加速度=二維(水平*速度,原本加速度的Y)
+        rb.velocity=new Vector2(h*MoveSpeed,rb.velocity.y);
+    }
+    private void GetHorizontal(){
+        //輸入.軸向("水平");
+        h=Input.GetAxis("Horizontal");
+        this.Move();
     }
 }
