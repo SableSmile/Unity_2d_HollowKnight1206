@@ -96,7 +96,7 @@ public class player : MonoBehaviour
 
             //剛體.添加推力(二為向量)
             rb.AddForce(new Vector2(0,JumpHeight));
-            OnGround=false;
+            animator.SetTrigger("JumpTrigger");
         }
 
         //碰撞物件= 2D 物理.覆蓋圓形(中心點，半徑，圖層)
@@ -111,6 +111,9 @@ public class player : MonoBehaviour
         else{
             OnGround=false;
         }
+        //animator.SetBool("OnGround",false);
+        animator.SetFloat("Jump",rb.velocity.y);
+        
 
     }
 }

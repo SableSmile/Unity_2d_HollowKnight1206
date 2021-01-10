@@ -22,6 +22,17 @@ public class Tip : MonoBehaviour
     public Camera came;
     public Transform tran;
 
+    public float a,b;
+
+    public Vector2 v2a=new Vector2(0,0);
+    public Vector2 v2=new Vector2(100,100);
+
+    void Update() {
+        a=Mathf.Lerp(a,b,0.3f);
+        //print(a);
+        print(a);
+    }
+
     
 
 
