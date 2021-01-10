@@ -708,7 +708,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 449283059}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -30.2, y: 28.84, z: 0}
+  m_LocalPosition: {x: -30, y: 30.25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -727,8 +727,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.19485378}
-  m_Size: {x: 2.071785, y: 2.3397083}
+  m_Offset: {x: 0.006129265, y: 0.22550201}
+  m_Size: {x: 2.0840435, y: 2.2784119}
   m_Direction: 0
 --- !u!114 &449283064
 MonoBehaviour:
@@ -742,15 +742,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6116325351244414fb5f422a22494517, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveSpeed: 10.5
-  JumpHeight: 100
-  OnGround: 0
+  MoveSpeed: 5
+  JumpHeight: 800
+  OnGround: 1
   bullet: {fileID: 0}
   bullet_pos: {fileID: 0}
   bullet_speed: 800
   shoot_sound: {fileID: 0}
   HP: 100
   h: 0
+  offset: {x: 0, y: 0, z: 0}
+  radius: 0.3
 --- !u!50 &449283065
 Rigidbody2D:
   serializedVersion: 4
@@ -766,7 +768,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 2.3
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -784,15 +786,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6116325351244414fb5f422a22494517, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveSpeed: 0
-  JumpHeight: 0
-  OnGround: 0
+  MoveSpeed: 10
+  JumpHeight: 750
+  OnGround: 1
   bullet: {fileID: 0}
   bullet_pos: {fileID: 0}
   bullet_speed: 0
   shoot_sound: {fileID: 0}
   HP: 0
   h: 0
+  offset: {x: 0, y: -0.82, z: 0}
+  radius: 0.3
 --- !u!1 &461957123
 GameObject:
   m_ObjectHideFlags: 0
@@ -6319,7 +6323,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 4
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -6343,7 +6347,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 878895566}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -26.63, y: 30.55, z: -10}
+  m_LocalPosition: {x: -28, y: 31, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -12093,7 +12097,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1885349722}
   - component: {fileID: 1885349721}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12429,7 +12433,7 @@ GameObject:
   - component: {fileID: 1977581667}
   - component: {fileID: 1977581666}
   - component: {fileID: 1977581665}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
