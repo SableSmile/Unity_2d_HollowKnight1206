@@ -1,13 +1,12 @@
-﻿
-using UnityEngine;
+﻿using UnityEngine;
 
 public class player : MonoBehaviour
 {
     #region  欄位
-    [Header("移動速度"),Range(0f,1000f)]
+    [Header("移動速度"), Range(0f, 1000f)]
     public float MoveSpeed;
-    
-    [Header("跳躍高度"),Range(0,3000)]
+
+    [Header("跳躍高度"), Range(0, 3000)]
     public int JumpHeight;
 
     [Header("是否在地板上")] //預設為否
@@ -19,33 +18,40 @@ public class player : MonoBehaviour
     [Header("子彈生成點")] //物件位置
     public Transform bullet_pos;
 
-    [Header("子彈速度"),Range(0,5000)]
-    public int bullet_speed;   
+    [Header("子彈速度"), Range(0, 5000)]
+    public int bullet_speed;
 
     [Header("開槍音效")] //槍聲
-    public AudioClip shoot_sound;   
+    public AudioClip shoot_sound;
 
-    [Header("血量"),Range(0,200)]
-    public int HP;    
+    [Header("血量"), Range(0, 200)]
+    public int HP;
 
-    private AudioSource audioSource;
+    [Header("吃鑰匙音效")] //吃鑰匙聲音
+    public AudioClip key_sound;
+
+    private AudioSource aud;
     private Rigidbody2D rb;
     private Animator animator;
     #endregion
 
     public float h;
+
     [Header("地面判定位移")] //地面判定位移
     public Vector3 offset;
+
     [Header("地面判定半徑")] //地面判定半徑
-    public float radius=0.3f;
+    public float radius = 0.3f;
+    private GameObject temp;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         //GetComponent<泛型>()
         //泛型:泛指所有類型
-        rb=GetComponent<Rigidbody2D>();
-        animator=GetComponent<Animator>();
+        rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+        aud = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -54,18 +60,22 @@ public class player : MonoBehaviour
         GetHorizontal();
         Move();
         Jump();
+        Fire();
     }
 
     //在Unity內繪製圖示
-    private void OnDrawGizmos() {
-        Gizmos.color=new Color(1,0,0,0.35f);
-        Gizmos.DrawSphere(transform.position+offset,radius);
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = new Color(1, 1, 0, 0.35f);
+        Gizmos.DrawSphere(transform.position + offset, radius);
     }
 
-    private void Move(){
+    private void Move()
+    {
         //剛體.加速度=二維(水平*速度,原本加速度的Y)
-        rb.velocity=new Vector2(h*MoveSpeed,rb.velocity.y);
-        if(Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)){
+        rb.velocity = new Vector2(h * MoveSpeed, rb.velocity.y);
+        if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+        {
 
             /*FlipX控制面相*/
             //this.GetComponent<SpriteRenderer>().flipX=false;
@@ -73,47 +83,73 @@ public class player : MonoBehaviour
 
             //trandsorm指的是與此腳本同一層的Transform元件
             //rotation角度在程式是localEulerAngles
-            transform.localEulerAngles=Vector3.zero; 
-            
+            transform.localEulerAngles = Vector3.zero;
+
         }
-        if(Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)){
-            
+        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+
             /*FlipX控制面相*/
             //this.GetComponent<SpriteRenderer>().flipX=enabled;
 
-            transform.localEulerAngles=new Vector3(0,180,0);
+            transform.localEulerAngles = new Vector3(0, 180, 0);
         }
         //玩家按下左或右鍵時，動畫設置 跑步 判斷基準為 水平移動h!=0
-        animator.SetBool("Run",h!=0);
+        animator.SetBool("Run", h != 0);
     }
-    private void GetHorizontal(){
+    private void GetHorizontal()
+    {
         //輸入.軸向("水平");
-        h=Input.GetAxis("Horizontal");
+        h = Input.GetAxis("Horizontal");
         this.Move();
     }
-    private void Jump(){
-        if(OnGround && Input.GetKeyDown(KeyCode.Space)){
+    private void Jump()
+    {
+        if (OnGround && Input.GetKeyDown(KeyCode.Space))
+        {
 
             //剛體.添加推力(二為向量)
-            rb.AddForce(new Vector2(0,JumpHeight));
+            rb.AddForce(new Vector2(0, JumpHeight));
             animator.SetTrigger("JumpTrigger");
         }
 
         //碰撞物件= 2D 物理.覆蓋圓形(中心點，半徑，圖層)
         //layermack 1<<8 1<<圖層 偵測第8層
-        Collider2D hit= Physics2D.OverlapCircle(transform.position+offset,radius,1<<8);
+        Collider2D hit = Physics2D.OverlapCircle(transform.position + offset, radius, 1 << 8);
         //animator.SetFloat("Jump",JumpHeight);
 
         //如碰撞物件存在，OnGround為"是"
-        if(hit){
-            OnGround=true;
+        if (hit)
+        {
+            OnGround = true;
         }
-        else{
-            OnGround=false;
+        else
+        {
+            OnGround = false;
         }
         //animator.SetBool("OnGround",false);
-        animator.SetFloat("Jump",rb.velocity.y);
-        
+        animator.SetFloat("Jump", rb.velocity.y);
+
+
+    }
+    private void Fire()
+    {
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {    //Mouse0=左鍵
+            aud.PlayOneShot(shoot_sound, Random.Range(0.8f, 1.2f));
+            temp = Instantiate(bullet, bullet_pos.position, bullet_pos.rotation);
+            temp.GetComponent<Rigidbody2D>().AddForce(bullet_pos.right * bullet_speed + bullet_pos.up * 160);
+        }
+    }
+    // 碰到物件的資訊
+    void OnTriggerEnter2D(Collider2D col)
+    {
+        if (col.tag == "key")
+        {
+            aud.PlayOneShot(key_sound, Random.Range(0.8f, 1.2f));
+            Destroy(col.gameObject);
+            
+        }
 
     }
 }
