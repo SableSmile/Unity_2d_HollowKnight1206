@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 
-public class player : MonoBehaviour
+public class Player : MonoBehaviour
 {
     #region  欄位
-    [Header("移動速度"), Range(0f, 1000f)]
+    [Header("移動速度"), Range(0f, 1000)]
     public float MoveSpeed;
 
     [Header("跳躍高度"), Range(0, 3000)]
@@ -21,11 +21,14 @@ public class player : MonoBehaviour
     [Header("子彈速度"), Range(0, 5000)]
     public int bullet_speed;
 
+    [Header("子彈傷害"), Range(0, 5000)]
+    public int bullet_atk;
+
     [Header("開槍音效")] //槍聲
     public AudioClip shoot_sound;
 
     [Header("血量"), Range(0, 200)]
-    public int HP;
+    public float HP;
 
     [Header("吃鑰匙音效")] //吃鑰匙聲音
     public AudioClip key_sound;
@@ -42,7 +45,6 @@ public class player : MonoBehaviour
 
     [Header("地面判定半徑")] //地面判定半徑
     public float radius = 0.3f;
-    private GameObject temp;
 
     // Start is called before the first frame update
     private void Start()
@@ -101,7 +103,6 @@ public class player : MonoBehaviour
     {
         //輸入.軸向("水平");
         h = Input.GetAxis("Horizontal");
-        this.Move();
     }
     private void Jump()
     {
@@ -127,8 +128,8 @@ public class player : MonoBehaviour
         {
             OnGround = false;
         }
-        //animator.SetBool("OnGround",false);
         animator.SetFloat("Jump", rb.velocity.y);
+        //animator.SetBool("OnGround",OnGround);
 
 
     }
@@ -137,8 +138,9 @@ public class player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {    //Mouse0=左鍵
             aud.PlayOneShot(shoot_sound, Random.Range(0.8f, 1.2f));
-            temp = Instantiate(bullet, bullet_pos.position, bullet_pos.rotation);
-            temp.GetComponent<Rigidbody2D>().AddForce(bullet_pos.right * bullet_speed + bullet_pos.up * 160);
+            GameObject temp = Instantiate(bullet, bullet_pos.position, bullet_pos.rotation);
+            temp.GetComponent<Rigidbody2D>().AddForce(bullet_pos.right * bullet_speed + bullet_pos.up * 50);
+            temp.AddComponent<bullet>().attack=bullet_atk;
         }
     }
     // 碰到物件的資訊
@@ -146,8 +148,8 @@ public class player : MonoBehaviour
     {
         if (col.tag == "key")
         {
-            aud.PlayOneShot(key_sound, Random.Range(0.8f, 1.2f));
             Destroy(col.gameObject);
+            aud.PlayOneShot(key_sound, Random.Range(0.8f, 1.2f));
             
         }
 
