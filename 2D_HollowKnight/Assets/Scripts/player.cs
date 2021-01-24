@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -29,10 +30,14 @@ public class Player : MonoBehaviour
 
     [Header("血量"), Range(0, 200)]
     public float HP;
-
     [Header("吃鑰匙音效")] //吃鑰匙聲音
     public AudioClip key_sound;
+    [Header("血量文字")]
+    public Text text_HP;
+    [Header("血條圖")]
+    public Image img_HP;
 
+    private float Max_HP;
     private AudioSource aud;
     private Rigidbody2D rb;
     private Animator animator;
@@ -54,6 +59,7 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         aud = GetComponent<AudioSource>();
+        Max_HP=HP;
     }
 
     // Update is called once per frame
@@ -129,7 +135,7 @@ public class Player : MonoBehaviour
             OnGround = false;
         }
         animator.SetFloat("Jump", rb.velocity.y);
-        //animator.SetBool("OnGround",OnGround);
+        animator.SetBool("OnGround",OnGround);
 
 
     }
@@ -153,5 +159,21 @@ public class Player : MonoBehaviour
             
         }
 
+    }
+    public void hurt(float damage){
+        HP-=damage;
+        //animator.SetTrigger("hurt");
+        text_HP.text=HP.ToString();
+        img_HP.fillAmount=HP/Max_HP;
+
+        if(HP<=0)
+            death();
+    }
+    public void death(){
+        HP=0;
+        text_HP.text=0.ToString();
+        animator.SetBool("Death",true);
+        this.enabled=false;
+        transform.Find("FNScar").gameObject.SetActive(false);
     }
 }

@@ -293,7 +293,7 @@ GameObject:
   m_Component:
   - component: {fileID: 170113597}
   - component: {fileID: 170113598}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: FNScar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -548,7 +548,7 @@ GameObject:
   - component: {fileID: 252568930}
   - component: {fileID: 252568929}
   - component: {fileID: 252568928}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: plat01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1038,7 +1038,7 @@ GameObject:
   - component: {fileID: 449283063}
   - component: {fileID: 449283067}
   - component: {fileID: 449283064}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1165,10 +1165,12 @@ MonoBehaviour:
   bullet: {fileID: 237601363603970404, guid: 1c1c87818b7bd8d4799a41f478d41a35, type: 3}
   bullet_pos: {fileID: 1483779539}
   bullet_speed: 1200
-  bullet_atk: 20
+  bullet_atk: 50
   shoot_sound: {fileID: 8300000, guid: 7a383db10edc1ee4da82138d8c8e90ed, type: 3}
   HP: 200
   key_sound: {fileID: 8300000, guid: 262e600a89209464687cb22b3c85b62c, type: 3}
+  text_HP: {fileID: 1343315185}
+  img_HP: {fileID: 1963639912}
   h: 0
   offset: {x: 0, y: -0.8, z: 0}
   radius: 0.3
@@ -6648,7 +6650,7 @@ GameObject:
   - component: {fileID: 770473549}
   - component: {fileID: 770473548}
   - component: {fileID: 770473547}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: plat02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7208,7 +7210,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &878895570
 MonoBehaviour:
@@ -7224,6 +7226,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 449283062}
   speed: 12
+  shake_Interval: 0.06
+  ShakeValue: 0.8
 --- !u!1 &961469358
 GameObject:
   m_ObjectHideFlags: 0
@@ -8175,6 +8179,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: portal (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 6187963577951119224, guid: d6b35a4c6c4d7da4e86b70f010b34ad6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7949575078130253097, guid: d6b35a4c6c4d7da4e86b70f010b34ad6,
         type: 3}
       propertyPath: m_RootOrder
@@ -8241,7 +8250,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1483779539}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: shoot_pos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8256,7 +8265,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1483779538}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1, y: -0.1, z: 0}
+  m_LocalPosition: {x: 0.669, y: 0.017, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 449283062}
@@ -13295,10 +13304,10 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 150
-  m_LinearDrag: 3
+  m_Mass: 10
+  m_LinearDrag: 1
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 5
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -13332,12 +13341,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acac59f9f5b9f8a44a1cbc00d6d6ecb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy_MoveSpeed: 10
+  enemy_MoveSpeed: 3
   enemy_HP: 500
-  enemy_AttackRange: 10
-  enemy_Attack: 10
+  enemy_AttackRange: 3
+  enemy_Attack: 50
+  enemy_cd: 3.5
+  Atkdelay: 0.7
   text_HP: {fileID: 779751476}
   img_HP: {fileID: 961469359}
+  offsetAtk: {x: 1.5, y: 0, z: 0}
+  sizeAtk: {x: 2, y: 3, z: 0}
+  OnDead:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1724099331}
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!82 &1657348260
 AudioSource:
   m_ObjectHideFlags: 0
@@ -13698,6 +13725,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1716748170}
   m_CullTransparentMesh: 0
+--- !u!1 &1724099331 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6187963577951119224, guid: d6b35a4c6c4d7da4e86b70f010b34ad6,
+    type: 3}
+  m_PrefabInstance: {fileID: 1455868957}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1813116163
 GameObject:
   m_ObjectHideFlags: 0
@@ -13911,7 +13944,7 @@ Transform:
   - {fileID: 252568927}
   - {fileID: 770473546}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1891975798
 GameObject:
