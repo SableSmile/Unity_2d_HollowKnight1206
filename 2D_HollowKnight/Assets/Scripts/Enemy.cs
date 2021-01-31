@@ -41,6 +41,8 @@ public class Enemy : MonoBehaviour
     private Rigidbody2D rig;
     private Animator an;
     private CameraControl cam;
+    private bool IsSecond;
+    private ParticleSystem ps;
     
 
     // Start is called before the first frame update
@@ -68,6 +70,9 @@ public class Enemy : MonoBehaviour
         text_HP.text=enemy_HP.ToString();
         img_HP.fillAmount=enemy_HP/Max_HP;
 
+        if(enemy_HP<=enemy_HP*0.8){
+            
+        }
         if(enemy_HP<=0)
             death();
     }
@@ -138,5 +143,8 @@ public class Enemy : MonoBehaviour
 
         StartCoroutine(cam.ShakeCamera());
         
+    }
+    private void Second_ATK(){
+
     }
 }

@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public class Player : MonoBehaviour
 {
+
     #region  欄位
     [Header("移動速度"), Range(0f, 1000)]
     public float MoveSpeed;
@@ -41,6 +43,8 @@ public class Player : MonoBehaviour
     private AudioSource aud;
     private Rigidbody2D rb;
     private Animator animator;
+    private SpriteRenderer sr;
+    
     #endregion
 
     public float h;
@@ -50,6 +54,8 @@ public class Player : MonoBehaviour
 
     [Header("地面判定半徑")] //地面判定半徑
     public float radius = 0.3f;
+    [Header("結束畫面")]
+    public GameObject gameover;
 
     // Start is called before the first frame update
     private void Start()
@@ -59,6 +65,7 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         aud = GetComponent<AudioSource>();
+        sr=GetComponent<SpriteRenderer>();
         Max_HP=HP;
     }
 
@@ -80,6 +87,10 @@ public class Player : MonoBehaviour
 
     private void Move()
     {
+        AnimatorStateInfo info=animator.GetCurrentAnimatorStateInfo(0);
+        if(info.IsName("attack")||info.IsName("hurt")){
+            
+        }
         //剛體.加速度=二維(水平*速度,原本加速度的Y)
         rb.velocity = new Vector2(h * MoveSpeed, rb.velocity.y);
         if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
@@ -165,6 +176,7 @@ public class Player : MonoBehaviour
         //animator.SetTrigger("hurt");
         text_HP.text=HP.ToString();
         img_HP.fillAmount=HP/Max_HP;
+        //StartCoroutine(DamageEffect());
 
         if(HP<=0)
             death();
@@ -174,6 +186,18 @@ public class Player : MonoBehaviour
         text_HP.text=0.ToString();
         animator.SetBool("Death",true);
         this.enabled=false;
+        rb.Sleep();
         transform.Find("FNScar").gameObject.SetActive(false);
+        gameover.SetActive(true);
+    }
+    private IEnumerator DamageEffect(){
+        Color red=new Color(1,0.1f,0.1f);
+        float interval=0.05f;
+        for(int i=0;i<5;i++){
+            sr.color=red;   //轉紅
+            yield return new WaitForSeconds(interval);  //等待
+            sr.color=Color.white;   //恢復
+            yield return new WaitForSeconds(interval);  //等待
+        }
     }
 }
