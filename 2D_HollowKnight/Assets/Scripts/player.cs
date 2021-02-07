@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
     [Header("跳躍高度"), Range(0, 3000)]
     public int JumpHeight;
 
-    [Header("是否在地板上")] //預設為否
+    [Header("是否在地板上"), Tooltip("判斷腳色是否在地面上")] //預設為否
     public bool OnGround;
 
     [Header("子彈")] //物件 子彈
@@ -89,7 +89,7 @@ public class Player : MonoBehaviour
     {
         AnimatorStateInfo info=animator.GetCurrentAnimatorStateInfo(0);
         if(info.IsName("attack")||info.IsName("hurt")){
-            
+            return;
         }
         //剛體.加速度=二維(水平*速度,原本加速度的Y)
         rb.velocity = new Vector2(h * MoveSpeed, rb.velocity.y);
@@ -176,24 +176,25 @@ public class Player : MonoBehaviour
         //animator.SetTrigger("hurt");
         text_HP.text=HP.ToString();
         img_HP.fillAmount=HP/Max_HP;
-        //StartCoroutine(DamageEffect());
+        StartCoroutine(DamageEffect());
 
         if(HP<=0)
             death();
     }
     public void death(){
         HP=0;
+        gameover.SetActive(true);
         text_HP.text=0.ToString();
         animator.SetBool("Death",true);
         this.enabled=false;
-        rb.Sleep();
+        rb.velocity=Vector3.zero;
         transform.Find("FNScar").gameObject.SetActive(false);
-        gameover.SetActive(true);
+        
     }
     private IEnumerator DamageEffect(){
         Color red=new Color(1,0.1f,0.1f);
         float interval=0.05f;
-        for(int i=0;i<5;i++){
+        for(int i=0;i<4;i++){
             sr.color=red;   //轉紅
             yield return new WaitForSeconds(interval);  //等待
             sr.color=Color.white;   //恢復

@@ -5,8 +5,8 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     private Player player;
-    private void Start() {
-        player=GetComponent<Player>();
+    private void Awake() {
+        player=FindObjectOfType<Player>();
     }
     public void PauseGame(){
         Time.timeScale=0;

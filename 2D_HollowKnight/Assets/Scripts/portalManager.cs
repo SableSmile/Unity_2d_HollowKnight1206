@@ -17,12 +17,20 @@ public class portalManager : MonoBehaviour
     }
     
     private void Awake() {
-        //player=GameObject.Find("Player");
+        player=GameObject.Find("Player").transform;
     }
 
+    private void Update() {
+       trans(); 
+    }
     private void OnTriggerEnter2D(Collider2D other) {
         if(other.name=="Player"){
             playerIn=true;
+        }
+    }
+    private void OnTriggerExit2D(Collider2D other) {
+        if(other.name=="Player"){
+            playerIn=false;
         }
     }
 }

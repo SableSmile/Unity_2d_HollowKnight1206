@@ -56,6 +56,7 @@ public class Enemy : MonoBehaviour
         Max_HP=enemy_HP;
         player=FindObjectOfType<Player>();
         cam=FindObjectOfType<CameraControl>();
+        ps=GameObject.Find("attack_effect").GetComponent<ParticleSystem>();
         
     }
     private void Update() {
@@ -66,12 +67,17 @@ public class Enemy : MonoBehaviour
 
     public void hurt(float damage){
         enemy_HP-=damage;
-        an.SetTrigger("hurt");
+
+        AnimatorStateInfo info=an.GetCurrentAnimatorStateInfo(0);
+        if(!info.IsName("attack")){
+            an.SetTrigger("hurt");
+        }            
         text_HP.text=enemy_HP.ToString();
         img_HP.fillAmount=enemy_HP/Max_HP;
 
-        if(enemy_HP<=enemy_HP*0.8){
-            
+        if(enemy_HP<=Max_HP*0.8f){
+            IsSecond=true;
+            enemy_Attack=25;
         }
         if(enemy_HP<=0)
             death();
@@ -84,17 +90,13 @@ public class Enemy : MonoBehaviour
         enemy_HP=0;
         text_HP.text=0.ToString();
         an.SetBool("death",true);
+
         GetComponent<CapsuleCollider2D>().enabled=false;
         rig.Sleep();
         rig.constraints=RigidbodyConstraints2D.FreezeAll;
            
     }
-    public void Move(){
-        AnimatorStateInfo asi=an.GetCurrentAnimatorStateInfo(0);
-        if(asi.IsName("hurt") || asi.IsName("attack")){
-            return;
-        }
-            
+    public void Move(){       
         /*if(transform.position.x>player.transform.position.x){
            transform.eulerAngles=new Vector3(0,180,0);
         }
@@ -109,12 +111,17 @@ public class Enemy : MonoBehaviour
         float dis=Vector2.Distance(transform.position,player.transform.position);
 
         if(dis>enemy_AttackRange){
+            AnimatorStateInfo asi=an.GetCurrentAnimatorStateInfo(0);
+            if(asi.IsName("hurt") || asi.IsName("attack")){
+                return;
+            }
             //鋼體.移動座標(座標+前方*一幀*移動速度)
             rig.MovePosition(transform.position+transform.right*Time.deltaTime*enemy_MoveSpeed);
         }
         else{
             attack();
         }
+        rig.WakeUp();
         an.SetBool("walk",rig.velocity.magnitude>0);
     }
     public void attack(){
@@ -133,6 +140,8 @@ public class Enemy : MonoBehaviour
         Gizmos.color=new Color(0,1,0,0.5f);
         Gizmos.DrawCube(transform.position+transform.right* offsetAtk.x+transform.up*offsetAtk.y,sizeAtk);
 
+        Gizmos.color = new Color(1, 0, 0, 0.5f);
+        Gizmos.DrawSphere(transform.position, enemy_AttackRange);
     }
     private IEnumerator DelaySendDamage(){
         yield return new WaitForSeconds(Atkdelay);
@@ -142,9 +151,9 @@ public class Enemy : MonoBehaviour
             }
 
         StartCoroutine(cam.ShakeCamera());
-        
-    }
-    private void Second_ATK(){
 
+        if(IsSecond){
+            ps.Play();
+        }
     }
 }
